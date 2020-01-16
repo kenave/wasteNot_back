@@ -8,7 +8,7 @@ class User < ApplicationRecord
     ingredients.each do |ingredient|
       user_ingredient = UserIngredient.find_by(user_id: self.id, ingredient_id: ingredient.id)
       ingredients_arr.push({
-        id: user_ingredient.id,
+        id: user_ingredient.id.to_s,
         name: ingredient.name, 
         quantity_type: ingredient.quantity_type,
         measurement_type: ingredient.measurement_type,
