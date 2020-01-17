@@ -3,21 +3,34 @@ class User < ApplicationRecord
   has_many :ingredients, through: :user_ingredients
 
   def get_inventory
-    ingredients = self.ingredients # [{name, quantity type, category}]
-    ingredients_arr = []
+    ingredients = self.ingredients.uniq # [{name, quantity type, category}]
+    puts ingredients
+    ingredients_hash = {}
     ingredients.each do |ingredient|
-      user_ingredient = UserIngredient.find_by(user_id: self.id, ingredient_id: ingredient.id)
-      ingredients_arr.push({
-        id: user_ingredient.id.to_s,
-        name: ingredient.name, 
-        quantity_type: ingredient.quantity_type,
-        measurement_type: ingredient.measurement_type,
-        category: ingredient.category, 
-        quantity: user_ingredient.quantity, 
-        date_purchased: user_ingredient.date_purchased, 
-        expiration_date: user_ingredient.expiration_date
-      })
+      user_ingredients = UserIngredient.where("user_id = ? AND ingredient_id = ?", self.id, ingredient.id)
+      user_ingredients.each do |ui|
+        if ingredients_hash[ingredient.name.downcase]
+          ingredients_hash[ingredient.name.downcase].push({
+            name: ingredient.name,
+            id: ui.id.to_s,
+            quantity: ui.quantity,
+            measurement_type: ui.measurement_type,
+            date_purchased: ui.date_purchased,
+            expiration_date: ui.expiration_date
+          })
+        else
+          ingredients_hash[ingredient.name.downcase] = [{
+            name: ingredient.name,
+            id: ui.id.to_s,
+            quantity: ui.quantity,
+            measurement_type: ui.measurement_type,
+            date_purchased: ui.date_purchased,
+            expiration_date: ui.expiration_date
+          }]
+        end
+      end
     end
-    ingredients_arr
+    ingredients_hash
   end
+
 end

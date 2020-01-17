@@ -4,6 +4,7 @@ class CreateUserIngredients < ActiveRecord::Migration[6.0]
       t.integer :user_id
       t.integer :ingredient_id
       t.float :quantity
+      t.string :measurement_type
       t.date :date_purchased
       t.date :expiration_date
 
