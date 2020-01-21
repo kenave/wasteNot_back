@@ -8,11 +8,13 @@ class User < ApplicationRecord
     ingredients_hash = {}
     ingredients.each do |ingredient|
       user_ingredients = UserIngredient.where("user_id = ? AND ingredient_id = ?", self.id, ingredient.id)
+      user_ingredients = user_ingredients.sort_by { |ui| ui.expiration_date }
       user_ingredients.each do |ui|
         if ingredients_hash[ingredient.name.downcase]
           ingredients_hash[ingredient.name.downcase].push({
             name: ingredient.name,
             id: ui.id.to_s,
+            original_quantity: ui.original_quantity,
             quantity: ui.quantity,
             measurement_type: ui.measurement_type,
             date_purchased: ui.date_purchased,
@@ -22,6 +24,7 @@ class User < ApplicationRecord
           ingredients_hash[ingredient.name.downcase] = [{
             name: ingredient.name,
             id: ui.id.to_s,
+            original_quantity: ui.original_quantity,
             quantity: ui.quantity,
             measurement_type: ui.measurement_type,
             date_purchased: ui.date_purchased,
