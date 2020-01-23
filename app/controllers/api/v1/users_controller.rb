@@ -25,8 +25,8 @@ class Api::V1::UsersController < ApplicationController
     ui = UserIngredient.find(params[:ing_id])
     # puts "original quantity: " + "#{ui.original_quantity}"
     # puts "multiplier: " + "#{params["quantity"].to_f / 100.0}"
-    puts "new quantity will be: " + "#{ui.original_quantity * (params["quantity"].to_f / 100.0)}"
-    ui.quantity = ui.original_quantity * params["quantity"].to_f / 100.0
+    # puts "new quantity will be: " + "#{ui.original_quantity * (params["quantity"].to_f / 100.0)}"
+    ui.quantity = params["quantity"].to_f
     ui.save
     # puts ui.quantity
     ingredients_hash = user.get_inventory
