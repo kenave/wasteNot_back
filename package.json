@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "kind-of": "^6.0.3",
+    "lodash": "^4.17.19",
+    "logkitty": "^0.7.1",
+    "mem": "^6.1.0",
+    "minimist": "^1.2.3"
+  }
+}
